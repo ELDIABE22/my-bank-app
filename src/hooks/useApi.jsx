@@ -28,13 +28,13 @@ async function getMovementsById(userId) {
   }
 }
 
-async function createMovement(amount, token, account_receive, userId) {
+async function createMovement(amount, account_recive, infoUsuarioContext ) {
   try {
     const requestBody = {
       amount,
-      token,
-      account_receive,
-      id: userId,
+      token: infoUsuarioContext.token,
+      account_recive,
+      id: infoUsuarioContext.user.account,
     };
     const response = await fetch(`${baseURL}/movements`, {
       method: 'POST',

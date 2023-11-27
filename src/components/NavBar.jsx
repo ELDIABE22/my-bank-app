@@ -6,15 +6,20 @@ import { useContext } from 'react';
 import { DataContext } from '../context/DataContext';
 
 const NavBar = () => {
-    const { setDataStorageMovimientos } = useContext(DataContext);
+    // Contexto de datos utilizado para acceder y modificar la información del usuario.
+    const { setDataStorageMovimientos, dataStorage } = useContext(DataContext);
 
+    // Hook de navegación de React Router.
     const navigate = useNavigate();
 
+    // Función que maneja el clic en el botón "Info Cuenta".
     const handleInfoButtonClick = () => {
         navigate('/cuenta/info');
     };
 
+    // Función que maneja el clic en el botón "Movimientos".
     const handleMovimientosButtonClick = () => {
+        // Diálogo de entrada para solicitar la identificación del usuario.
         Swal.fire({
             title: "Ingresa tu identificación",
             input: "text",
@@ -26,7 +31,15 @@ const NavBar = () => {
             showLoaderOnConfirm: true,
             preConfirm: async (userId) => {
                 try {
+                    // Verifica si la identificación coincide con la del usuario.
+                    if (userId !== dataStorage.user.account) {
+                        return Swal.showValidationMessage('La identificación no coincide!');
+                    }
+
+                    // Obtiene los movimientos del usuario por su identificación.
                     const data = await getMovementsById(userId);
+
+                    // Maneja diferentes mensajes de error o éxito.
                     if (data.msg === 'Usuario no encontrado') {
                         return Swal.showValidationMessage(data.msg);
                     } else if (data.msg === 'Error interno') {
@@ -36,7 +49,6 @@ const NavBar = () => {
                         localStorage.setItem('dataLoggedMovimientos', JSON.stringify(data));
                         navigate('/cuenta/movimientos');
                     }
-                    console.log(data);
                 } catch (error) {
                     Swal.showValidationMessage(`
                         Request failed: ${error}
@@ -47,19 +59,21 @@ const NavBar = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: `Identifiación valida!`,
+                    title: 'Identificación valida!',
                     icon: "success"
                 });
             }
         });
     };
 
+    // Función que maneja el clic en el botón "Transferencia".
     function handleTransferenciaButtonClick() {
+        let data;
+
+        // Diálogo de entrada para solicitar la información de la transferencia.
         Swal.fire({
             title: 'Ingresa tu información',
             html: `
-                <input required class="swal2-input identificacion" placeholder="Identificación" > 
-                <input required class="swal2-input token" placeholder="Token" > 
                 <input required class="swal2-input cuenta" placeholder="Cuenta a recibir" > 
                 <input required class="swal2-input monto" placeholder="Monto" >
             `,
@@ -67,14 +81,21 @@ const NavBar = () => {
             confirmButtonText: "Enviar",
             showLoaderOnConfirm: true,
             preConfirm: async () => {
-                const identificacion = document.querySelector(".identificacion").value;
-                const token = document.querySelector(".token").value;
                 const cuenta = document.querySelector(".cuenta").value;
                 const monto = document.querySelector(".monto").value;
 
                 try {
-                    const data = await createMovement(monto, token, cuenta, identificacion);
-                    console.log(data);
+                    // Crea un nuevo movimiento de transferencia en la cuenta del usuario.
+                    data = await createMovement(parseInt(monto), cuenta, dataStorage);
+
+                    // Maneja diferentes mensajes de error o éxito.
+                    if (data.msg !== 'Envio realizado') {
+                        return Swal.showValidationMessage(data.msg);
+                    } else {
+                        dataStorage.user.money = data.new_money;
+                        setDataStorageMovimientos(dataStorage);
+                        localStorage.setItem('dataLogged', JSON.stringify(dataStorage));
+                    }
                 } catch (error) {
                     Swal.showValidationMessage(`Request failed: ${error}`);
                 }
@@ -83,14 +104,16 @@ const NavBar = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: `Transferencia exitosa!`,
+                    title: data.msg,
                     icon: "success",
                 });
             }
         });
     }
 
+    // Función que maneja el clic en el botón "Cerrar sesión".
     const onLogout = () => {
+        // Diálogo de confirmación para cerrar sesión.
         Swal.fire({
             icon: "question",
             title: "¿Seguro que quieres cerrar sesión?",
@@ -100,20 +123,24 @@ const NavBar = () => {
             confirmButtonText: "Confirmar"
         }).then((result) => {
             if (result.isConfirmed) {
+                // Diálogo de éxito al cerrar sesión.
                 Swal.fire({
                     title: "Sesion Cerrada!",
                     icon: "success"
                 });
 
+                // Elimina la información del usuario almacenada y redirige a la página de inicio.
                 localStorage.removeItem('dataLogged');
                 navigate('/', { replace: true });
             }
         });
     }
 
+    // Renderiza la barra de navegación con botones de diferentes secciones.
     return (
         <div className="contenedor-navbar">
             <nav>
+                {/* Botón "Info Cuenta" */}
                 <button className='boton-nav boton-info' onClick={handleInfoButtonClick}>
                     <div className="svg-wrapper-1">
                         <div className="svg-wrapper">
@@ -125,6 +152,8 @@ const NavBar = () => {
                     </div>
                     <span>Info Cuenta</span>
                 </button>
+
+                {/* Botón "Movimientos" */}
                 <button className='boton-nav boton-movimientos' onClick={handleMovimientosButtonClick}>
                     <div className="svg-wrapper-1">
                         <div className="svg-wrapper">
@@ -136,6 +165,8 @@ const NavBar = () => {
                     </div>
                     <span>Movimientos</span>
                 </button>
+
+                {/* Botón "Transferencia" */}
                 <button className='boton-nav boton-transferencia' onClick={handleTransferenciaButtonClick}>
                     <div className="svg-wrapper-1">
                         <div className="svg-wrapper">
@@ -147,6 +178,8 @@ const NavBar = () => {
                     </div>
                     <span>Transferencia</span>
                 </button>
+
+                {/* Botón "Cerrar sesión" */}
                 <button className='boton-nav boton-salir' onClick={onLogout}>
                     <div className="svg-wrapper-1">
                         <div className="svg-wrapper">
@@ -163,4 +196,4 @@ const NavBar = () => {
     )
 }
 
-export default NavBar
+export default NavBar;

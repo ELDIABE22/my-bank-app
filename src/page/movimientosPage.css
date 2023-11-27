@@ -8,5 +8,8 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+    max-height: 85vh;
+    padding: 10px;
+    overflow-y: auto;
 }
 
