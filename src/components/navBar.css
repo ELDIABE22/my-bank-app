@@ -1,0 +1,92 @@
+.contenedor-navbar {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 17%;
+    /* background: #00B894; */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* BOTONES NAV */
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.boton-nav {
+    font-family: inherit;
+    font-size: 18px;
+    background: linear-gradient(to bottom, #4dc7d9 0%, #66a6ff 100%);
+    color: white;
+    padding: 0.8em 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+.boton-info {
+    background: linear-gradient(to bottom, #001F3F 0%, #003366 100%);
+}
+
+.boton-movimientos {
+    background: linear-gradient(to bottom, #008000 0%, #00B800 100%);
+}
+
+.boton-transferencia {
+    background: linear-gradient(to bottom, #00FF00 0%, #33FF33 100%);
+}
+
+.boton-salir {
+    background: linear-gradient(to bottom, #FF0000 0%, #FF3333 100%);
+}
+
+.boton-nav:hover {  
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.boton-nav:active {
+    transform: scale(0.95);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.boton-nav span {
+    display: block;
+    margin-left: 0.4em;
+    transition: all 0.3s;
+}
+
+.boton-nav svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+    transition: all 0.3s;
+}
+
+.boton-nav .svg-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-right: 0.5em;
+    transition: all 0.3s;
+}
+
+.boton-nav:hover .svg-wrapper {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.boton-nav:hover svg {
+    transform: rotate(45deg);
+}

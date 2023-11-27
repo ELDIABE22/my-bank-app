@@ -1,0 +1,89 @@
+body {
+    overflow: hidden;
+}
+
+.contenedor-home {
+    display: flex;
+}
+
+.contenedor-bienvenida {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #00B894;
+    width: 50%;
+    height: 100vh;
+    gap: 15px;
+}
+
+.img-banco {
+    width: 50%;
+}
+
+.img-banco img {
+    width: 100%;
+}
+
+button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.boton-ingresar {
+    font-weight: 600;
+    color: black;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1.25em 2em;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 0.75em;
+    transform-style: preserve-3d;
+    transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+
+.boton-ingresar::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #005241;
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px black;
+    transform: translate3d(0, 0.75em, -1em);
+    transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+
+.boton-ingresar:hover {
+    background: #5CFFDE;
+    transform: translate(0, 0.25em);
+}
+
+.boton-ingresar:hover::before {
+    box-shadow: 0 0 0 2px black;
+    transform: translate3d(0, 0.5em, -1em);
+}
+
+.boton-ingresar:active {
+    background: #5CFFDE;
+    transform: translate(0em, 0.75em);
+}
+
+.boton-ingresar:active::before {
+    box-shadow: 0 0 0 2px black;
+    transform: translate3d(0, 0, -1em);
+}

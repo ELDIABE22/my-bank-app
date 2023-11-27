@@ -1,0 +1,10 @@
+.contenedor-cuenta {
+    width: 100%;
+    display: flex;
+}
+
+.contenedor-main {
+    width: 83%;
+    background: #00B894;
+    padding: 20px;
+}
